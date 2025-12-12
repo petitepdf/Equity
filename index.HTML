@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Med Prep - Founder Equity Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Landing Page */
+        .landing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            border-radius: 6px;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 50px;
+            max-width: 600px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            padding: 18px 48px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(20, 184, 166, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 80px;
+            max-width: 900px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(20, 184, 166, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Add Founders Page */
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .page-subtitle {
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .founder-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .founder-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .founder-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+
+        .founder-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .founder-role {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .btn-remove {
+            padding: 8px 20px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            color: #94a3b8;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(20, 184, 166, 0.5);
+            color: #14b8a6;
+        }
+
+        .btn-continue {
+            width: 100%;
+            padding: 20px;
+            margin-top: 24px;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(20, 184, 166, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #14b8a6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input::placeholder {
+            color: #64748b;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Scoring Page */
+        .scoring-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .scoring-info h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .scoring-stats {
+            text-align: right;
+        }
+
+        .founder-progress {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .current-points {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #14b8a6, #06b6d4);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .category-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(20, 184, 166, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .category-max {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(20, 184, 166, 0.3);
+        }
+
+        .option.selected {
+            background: rgba(20, 184, 166, 0.1);
+            border-color: #14b8a6;
+        }
+
+        .radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .option.selected .radio {
+            border-color: #14b8a6;
+        }
+
+        .option.selected .radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #14b8a6;
+            border-radius: 50%;
+        }
+
+        .option-label {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .option-value {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .navigation-buttons button {
+            flex: 1;
+        }
+
+        /* Results Page */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 40px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .results-table {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            padding: 20px 24px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th:nth-child(2), th:nth-child(3), th:nth-child(4) {
+            text-align: center;
+        }
+
+        td {
+            padding: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+            text-align: center;
+        }
+
+        .founder-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .equity-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(20, 184, 166, 0.15);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #14b8a6;
+        }
+
+        .distribution-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .distribution-item {
+            margin-bottom: 24px;
+        }
+
+        .distribution-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .distribution-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .distribution-percent {
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .distribution-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .distribution-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #14b8a6, #06b6d4);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 42px; }
+            .stats-grid, .results-grid { grid-template-columns: 1fr; }
+            .scoring-header { flex-direction: column; gap: 20px; }
+            .scoring-stats { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        let state = {
+            step: 'landing',
+            founders: [],
+            currentFounder: null,
+            scores: {}
+        };
+
+        const pointSystem = {
+            timeCommitment: [
+                { label: 'Full-time', value: 40 },
+                { label: 'Active part-time', value: 30 },
+                { label: 'Light part-time', value: 15 },
+                { label: 'Minimal involvement', value: 5 },
+                { label: 'None', value: 0 }
+            ],
+            skillValue: [
+                { label: 'Core skill', value: 25 },
+                { label: 'Strong skill', value: 18 },
+                { label: 'Support skill', value: 10 },
+                { label: 'None', value: 0 }
+            ],
+            financialInvestment: [
+                { label: 'Highest investor', value: 20 },
+                { label: 'Medium investor', value: 15 },
+                { label: 'Small investor', value: 8 },
+                { label: 'None', value: 0 }
+            ],
+            riskTaken: [
+                { label: 'Major risk (quit job)', value: 10 },
+                { label: 'Medium risk', value: 6 },
+                { label: 'Small risk', value: 3 },
+                { label: 'None', value: 0 }
+            ],
+            ideaOwnership: [
+                { label: 'Originator', value: 5 },
+                { label: 'Helped shape', value: 3 },
+                { label: 'Joined early', value: 1 },
+                { label: 'Joined later', value: 0 }
+            ]
+        };
+
+        function addFounder(name, role) {
+            const id = Date.now();
+            state.founders.push({ id, name, role });
+            state.scores[id] = {};
+            render();
+        }
+
+        function removeFounder(id) {
+            state.founders = state.founders.filter(f => f.id !== id);
+            delete state.scores[id];
+            render();
+        }
+
+        function updateScore(founderId, category, value) {
+            if (!state.scores[founderId]) state.scores[founderId] = {};
+            state.scores[founderId][category] = value;
+            render();
+        }
+
+        function calculateResults() {
+            const results = state.founders.map(founder => {
+                const founderScores = state.scores[founder.id] || {};
+                const total = Object.values(founderScores).reduce((sum, val) => sum + val, 0);
+                return { ...founder, points: total, breakdown: founderScores };
+            });
+            const totalPoints = results.reduce((sum, f) => sum + f.points, 0);
+            return results.map(founder => ({
+                ...founder,
+                equity: totalPoints > 0 ? (founder.points / totalPoints) * 100 : 0
+            }));
+        }
+
+        function renderLanding() {
+            return `
+                <div class="landing">
+                    <div class="logo">
+                        <div class="logo-icon"></div>
+                        <span class="logo-text">MED PREP</span>
+                    </div>
+                    <h1>Founder Equity<br>Calculator</h1>
+                    <p class="subtitle">Define fair equity splits based on contribution, time, investment, and skill using an objective point-based system.</p>
+                    <button class="btn-primary" onclick="state.step = 'addFounders'; render();">Start Calculation</button>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Categories</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💯</div>
+                            <div class="stat-number">100</div>
+                            <div class="stat-label">Max Points</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⚖️</div>
+                            <div class="stat-number">Fair</div>
+                            <div class="stat-label">& Objective</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAddFounders() {
+            const foundersList = state.founders.map(f => `
+                <div class="founder-card">
+                    <div class="founder-info">
+                        <h3>${f.name}</h3>
+                        ${f.role ? `<div class="founder-role">${f.role}</div>` : ''}
+                    </div>
+                    <button class="btn-remove" onclick="removeFounder(${f.id})">Remove</button>
+                </div>
+            `).join('');
+
+            return `
+                <div class="container">
+                    <div class="page-header">
+                        <h2 class="page-title">Add Founders</h2>
+                        <p class="page-subtitle">Enter the names of all founders involved in your startup.</p>
+                    </div>
+                    <div class="founder-list">${foundersList}</div>
+                    <button class="btn-add" onclick="showModal()">+ Add Founder</button>
+                    ${state.founders.length > 0 ? `<button class="btn-continue" onclick="state.currentFounder = 0; state.step = 'scoring'; render();">Continue to Scoring →</button>` : ''}
+                </div>
+
+                <div id="modal" class="modal">
+                    <div class="modal-content">
+                        <h3 class="modal-title">Add New Founder</h3>
+                        <input id="founderName" class="input" type="text" placeholder="Founder Name">
+                        <input id="founderRole" class="input" type="text" placeholder="Role (optional)">
+                        <div class="modal-buttons">
+                            <button class="btn-secondary" onclick="hideModal()">Cancel</button>
+                            <button class="btn-primary" onclick="submitFounder()">Add Founder</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderScoring() {
+            const founder = state.founders[state.currentFounder];
+            const founderScores = state.scores[founder.id] || {};
+            const totalPoints = Object.values(founderScores).reduce((a, b) => a + b, 0);
+            const progress = ((state.currentFounder + 1) / state.founders.length) * 100;
+
+            const categories = [
+                { key: 'timeCommitment', label: 'Time Commitment', icon: '⏱️', max: 40 },
+                { key: 'skillValue', label: 'Skill Value', icon: '🎯', max: 25 },
+                { key: 'financialInvestment', label: 'Financial Investment', icon: '💰', max: 20 },
+                { key: 'riskTaken', label: 'Risk Taken', icon: '📈', max: 10 },
+                { key: 'ideaOwnership', label: 'Idea Ownership', icon: '💡', max: 5 }
+            ];
+
+            const categoriesHTML = categories.map(cat => {
+                const options = pointSystem[cat.key].map(opt => `
+                    <div class="option ${founderScores[cat.key] === opt.value ? 'selected' : ''}" 
+                         onclick="updateScore(${founder.id}, '${cat.key}', ${opt.value})">
+                        <div class="radio"></div>
+                        <span class="option-label">${opt.label}</span>
+                        <span class="option-value">${opt.value}</span>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">${cat.icon}</div>
+                            <div>
+                                <div class="category-title">${cat.label}</div>
+                                <div class="category-max">Maximum ${cat.max} points</div>
+                            </div>
+                        </div>
+                        <div class="options">${options}</div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="container">
+                    <div class="scoring-header">
+                        <div class="scoring-info">
+                            <h2>${founder.name}</h2>
+                            <p class="page-subtitle">Select contribution level for each category</p>
+                        </div>
+                        <div class="scoring-stats">
+                            <div class="founder-progress">Founder ${state.currentFounder + 1} of ${state.founders.length}</div>
+                            <div class="current-points">${totalPoints} pts</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="category-grid">${categoriesHTML}</div>
+                    <div class="navigation-buttons">
+                        ${state.currentFounder > 0 ? `<button class="btn-secondary" onclick="state.currentFounder--; render();">← Previous</button>` : ''}
+                        <button class="btn-primary" onclick="${state.currentFounder < state.founders.length - 1 ? 'state.currentFounder++; render();' : 'state.step = \'results\'; render();'}">
+                            ${state.currentFounder < state.founders.length - 1 ? 'Next Founder →' : 'View Results →'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderResults() {
